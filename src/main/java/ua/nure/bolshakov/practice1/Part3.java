@@ -8,4 +8,3 @@ public class Part3 {
         System.out.println(Arrays.asList(args) );
     }
 }
-//TODO
