@@ -1,4 +1,4 @@
-package ua.nure.bolshakov.practice3.part1;
+package ua.nure.bolshakov.practice3;
 
 import java.util.Random;
 import java.util.regex.Matcher;
