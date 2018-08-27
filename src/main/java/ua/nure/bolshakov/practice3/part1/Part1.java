@@ -19,7 +19,7 @@ public class Part1 {
         System.out.println("==================================================");
     }
 
-    private static final Pattern p = Pattern.compile("\\n(.+);(.+);(.+(@.+))", Pattern.MULTILINE);
+    private static final Pattern p = Pattern.compile("\\n(.+);(.+) (.+);(.+(@.+))", Pattern.MULTILINE);
 
     public static String convert1(String input) {
         Matcher m = p.matcher(input);
@@ -27,22 +27,19 @@ public class Part1 {
         while (m.find()) {
             result.append(m.group(1))
                     .append(" ==> ")
-                    .append(m.group(3))
+                    .append(m.group(4))
                     .append(System.lineSeparator());
         }
         return result.toString();
     }
 
-
-    //TODO NEED FIX AS AT TASK
-
     public static String convert2(String input) {
         Matcher m = p.matcher(input);
         StringBuilder result = new StringBuilder();
         while (m.find()) {
-            result.append(m.group(2))
+            result.append(m.group(3))
                     .append(" (email: ")
-                    .append(m.group(3))
+                    .append(m.group(4))
                     .append(")")
                     .append(System.lineSeparator());
         }
@@ -54,10 +51,10 @@ public class Part1 {
         Matcher m2 = p.matcher(input);
         StringBuilder result = new StringBuilder();
         while (m1.find()) {
-            if (result.indexOf(m1.group(4)) == -1) {
-                result.append(m1.group(4)).append(" ==> ");
+            if (result.indexOf(m1.group(5)) == -1) {
+                result.append(m1.group(5)).append(" ==> ");
                 while (m2.find()) {
-                    if (m2.group(4).equals(m1.group(4))) {
+                    if (m2.group(5).equals(m1.group(5))) {
                         result.append(m2.group(1)).append(", ");
                     }
                 }
