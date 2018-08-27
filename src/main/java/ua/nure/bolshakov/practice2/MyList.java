@@ -18,9 +18,4 @@ public interface MyList extends Iterable<Object> {
     // returns true if this list contains all of the elements
 // of the specified list
     boolean containsAll(MyList c);
-
-//    int findElement (Object o);
-
-
-
 }

@@ -2,8 +2,9 @@ package ua.nure.bolshakov.practice2;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class MyListImpl implements MyList {
+public class MyListImpl implements MyList, ListIterable {
 
     private Object[] arr = new Object[0];
 
@@ -32,7 +33,7 @@ public class MyListImpl implements MyList {
         }
         return -1;
     }
-
+//проверка длины
     public boolean remove(Object o) {
         Object[] newData = new Object[arr.length - 1];
         int index = findElement(o);
@@ -50,8 +51,10 @@ public class MyListImpl implements MyList {
         return true;
     }
 
-    public Object[] toArray() {//TODO RETURN COPY OF ARRAY
-        return arr;
+    public Object[] toArray() {
+        Object[] newArr = new Object[arr.length];
+        System.arraycopy(arr, 0, newArr, 0, arr.length);
+        return newArr;
     }
 
     public int size() {
@@ -89,26 +92,60 @@ public class MyListImpl implements MyList {
         return s;
     }
 
-
     public Iterator<Object> iterator() {
         return new IteratorImpl();
     }
 
 
     private class IteratorImpl implements Iterator<Object> {
-        @Override
+        int current = 0;
+        int indexOfLastReturned = -1;
+
         public boolean hasNext() {
-            return false;
+
+            return current < arr.length;
         }
 
-        @Override
         public Object next() {
-            return null;
+            if (current >= arr.length)
+                throw new NoSuchElementException();
+            indexOfLastReturned = current;
+            return arr[current++];
+        }
+
+        public void remove() {
+            if (indexOfLastReturned == -1)
+                throw new IllegalStateException();
+            MyListImpl.this.remove(arr[indexOfLastReturned]);
+            current--;
+            indexOfLastReturned = -1;
+        }
+    }
+
+    public ListIterator listIterator() {
+        return new ListIteratorImpl();
+    }
+
+    private class ListIteratorImpl extends IteratorImpl implements ListIterator {
+        @Override
+        public boolean hasPrevious() {
+            return current != 0;
         }
 
         @Override
-        public void remove() {
+        public Object previous() {
+            if (current == -1)
+                throw new NoSuchElementException();
+            indexOfLastReturned = current;
+            return arr[--current];
+        }
 
+        @Override
+        public void set(Object e) {
+            if (indexOfLastReturned == -1)
+                throw new IllegalStateException();
+            arr[indexOfLastReturned] = e;
+            indexOfLastReturned = -1;
         }
     }
 }
